@@ -63,6 +63,7 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow();
   }
+
 });
 
 // In this file you can include the rest of your app's specific main process
@@ -82,17 +83,10 @@ const sendStatusToWindow = (text) => {
 autoUpdater.on('checking-for-update', () => {
   sendStatusToWindow('Checking for update...');
 });
-autoUpdater.on('update-available', (info) => {
-  console.log(info)
-  dialog.showMessageBoxSync(null, {
-    message: `A newer version of the program is available:\n${app.getVersion()} -> ${info.version}`,
-    type: 'info',
-    button: ['Update', 'Later'],
-    title: `${app.getName()} update available`
-  })
+autoUpdater.on('update-available', () => {
   sendStatusToWindow('Update available.');
 });
-autoUpdater.on('update-not-available', info => {
+autoUpdater.on('update-not-available', () => {
   sendStatusToWindow('Update not available.');
 });
 autoUpdater.on('error', err => {
@@ -103,13 +97,24 @@ autoUpdater.on('download-progress', progressObj => {
     `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred} + '/' + ${progressObj.total} + )`
   );
 });
-autoUpdater.on('update-downloaded', info => {
+autoUpdater.on('update-downloaded', () => {
   sendStatusToWindow('Update downloaded; will install now');
 });
 
-autoUpdater.on('update-downloaded', info => {
+autoUpdater.on('update-downloaded', (info) => {
   // Wait 5 seconds, then quit and install
   // In your application, you don't need to wait 500 ms.
   // You could call autoUpdater.quitAndInstall(); immediately
-  autoUpdater.quitAndInstall();
+  dialog.showMessageBoxSync(null, {
+    message: `A newer version of the program is available`,
+    detail: `${app.getVersion()} -> ${info.version}`,
+    type: 'info',
+    buttons: ['Update', 'Later'],
+    title: `${app.getName()} update available`
+  }, (response) => {
+    console.log(response);
+    if(response === 0){
+      autoUpdater.quitAndInstall();
+    }
+  })
 });

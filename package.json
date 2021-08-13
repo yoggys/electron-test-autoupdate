@@ -1,7 +1,7 @@
 {
   "name": "autoupdate",
   "productName": "autoupdate",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Tests of autoupdate functionality",
   "repository": "https://github.com/yoggys/electron-test-autoupdate",
   "main": "src/index.js",
