@@ -1,16 +1,23 @@
 {
   "name": "autoupdate",
   "productName": "autoupdate",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Tests of autoupdate functionality",
+  "repository": "https://github.com/yoggys/electron-test-autoupdate",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder --x64 --win",
+    "gh-publish": "electron-builder --x64 --win -p always",
     "lint": "echo \"No linting configured\""
   },
+  "build":{
+  },
+
   "keywords": [],
   "author": {
     "name": "yoggys",
@@ -47,6 +54,7 @@
   "dependencies": {
     "electron-log": "^4.4.1",
     "electron-squirrel-startup": "^1.0.0",
+    "electron-updater": "^4.3.9",
     "update-electron-app": "^2.0.1"
   },
   "devDependencies": {
@@ -55,6 +63,7 @@
     "@electron-forge/maker-rpm": "^6.0.0-beta.59",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.59",
     "@electron-forge/maker-zip": "^6.0.0-beta.59",
-    "electron": "13.1.9"
+    "electron": "13.1.9",
+    "electron-builder": "^22.11.7"
   }
 }
