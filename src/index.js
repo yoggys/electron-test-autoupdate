@@ -105,16 +105,22 @@ autoUpdater.on('update-downloaded', (info) => {
   // Wait 5 seconds, then quit and install
   // In your application, you don't need to wait 500 ms.
   // You could call autoUpdater.quitAndInstall(); immediately
-  dialog.showMessageBoxSync(null, {
+  options = {
+    type: 'info',
+    title: `${app.getName()} update available`,
     message: `A newer version of the program is available`,
     detail: `${app.getVersion()} -> ${info.version}`,
-    type: 'info',
     buttons: ['Update', 'Later'],
-    title: `${app.getName()} update available`
-  }, (response) => {
-    console.log(response);
-    if(response === 0){
-      autoUpdater.quitAndInstall();
-    }
-  })
+  };
+
+  dialog.showMessageBox(null, options)
+    .then( (choice) => {
+      if(choice.response === 0) {
+        sendStatusToWindow('Update accepted, installing!');
+        autoUpdater.quitAndInstall();
+      }
+      else {
+        sendStatusToWindow('Update denied!');
+      }
+    })
 });
